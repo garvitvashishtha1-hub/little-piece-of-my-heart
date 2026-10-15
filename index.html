@@ -1,0 +1,154 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#190b18">
+  <meta name="description" content="A little romantic surprise made with love.">
+  <title>A Little Piece of My Heart ♥</title>
+
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+
+<body>
+  <!-- Animated background -->
+  <div class="stars" aria-hidden="true"></div>
+
+  <main class="experience">
+
+    <!-- SCREEN 1: WELCOME -->
+    <section class="screen" id="welcome">
+      <p class="eyebrow">A LITTLE SOMETHING FOR YOU</p>
+
+      <div class="main-heart" aria-hidden="true">♥</div>
+
+      <h1>Hey, you.</h1>
+
+      <p class="subtitle">
+        I made something small, but it comes
+        from a very big place in my heart.
+      </p>
+
+      <button type="button" id="beginButton">
+        Open your surprise ♥
+      </button>
+
+      <p class="hint">
+        Take your time. This is just for you.
+      </p>
+    </section>
+
+
+    <!-- SCREEN 2: ENVELOPE AND LETTER -->
+    <section class="screen hidden" id="letter">
+      <p class="eyebrow">A LETTER FROM ME TO YOU</p>
+
+      <h2>Something I want you to know</h2>
+
+      <!-- Animated envelope -->
+      <div class="envelope-stage" id="envelopeStage">
+        <button
+          type="button"
+          class="envelope-button"
+          id="openEnvelope"
+          aria-label="Open your love letter"
+        >
+          <span class="envelope-visual" aria-hidden="true">
+            <span class="envelope-paper"></span>
+            <span class="envelope-back"></span>
+            <span class="envelope-flap"></span>
+            <span class="envelope-front"></span>
+            <span class="envelope-seal">♥</span>
+          </span>
+
+          <span
+            class="envelope-instruction"
+            id="envelopeInstruction"
+          >
+            Tap to open your letter ♡
+          </span>
+        </button>
+      </div>
+
+      <!-- Your letter appears after the envelope opens -->
+      <div class="letter-content hidden" id="letterContent">
+        <p class="letter-text" id="letterText"></p>
+
+        <button
+          type="button"
+          id="reasonsButton"
+          class="secondary"
+        >
+          There's more... →
+        </button>
+      </div>
+    </section>
+
+
+    <!-- SCREEN 3: PERSONAL MESSAGES -->
+    <section class="screen hidden" id="reasons">
+      <p class="eyebrow">LITTLE THINGS, BIG FEELINGS</p>
+
+      <h2>One little reminder</h2>
+
+      <div class="message-card">
+        <span class="sparkle" aria-hidden="true">✦</span>
+
+        <p id="reasonText">
+          Tap the button, sweetheart.
+        </p>
+
+        <span class="sparkle" aria-hidden="true">✦</span>
+      </div>
+
+      <button type="button" id="nextReasonButton">
+        Another reminder ♥
+      </button>
+
+      <button type="button" id="finalButton" class="secondary">
+        One last thing...
+      </button>
+    </section>
+
+
+    <!-- SCREEN 4: FINAL SURPRISE -->
+    <section class="screen hidden" id="final">
+      <div class="final-heart" aria-hidden="true">♥</div>
+
+      <p class="eyebrow">AND BEFORE YOU GO...</p>
+
+      <h2>If I could tell you one thing</h2>
+
+      <p class="final-message" id="finalMessage"></p>
+
+      <p class="signature">
+        Made with love, just for you. ♡
+      </p>
+
+      <button type="button" id="replayButton" class="secondary">
+        Start again ↺
+      </button>
+    </section>
+
+  </main>
+
+
+  <!-- Optional background music -->
+  <div class="music-control">
+    <button
+      type="button"
+      id="musicButton"
+      class="music-button"
+      aria-label="Toggle background music"
+    >
+      ♫ Music: off
+    </button>
+  </div>
+
+  <!-- Add your own audio file later if you want music -->
+  <audio id="backgroundMusic" loop preload="none"></audio>
+
+</body>
+</html>

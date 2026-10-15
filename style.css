@@ -1,0 +1,776 @@
+
+/* =========================================
+   1. GLOBAL STYLES AND COLOURS
+========================================= */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  --pink: #ffb6ce;
+  --rose: #ff759e;
+  --cream: #fff0e7;
+  --muted: #d5b7c8;
+  --dark: #190b18;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+
+  background:
+    radial-gradient(
+      ellipse at 50% 20%,
+      #50213f 0%,
+      transparent 55%
+    ),
+    linear-gradient(
+      145deg,
+      #190b18,
+      #301329 55%,
+      #100914
+    );
+}
+
+
+/* =========================================
+   2. CINEMATIC STAR BACKGROUND
+========================================= */
+
+.stars {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+
+  background-image:
+    radial-gradient(circle, #fff6df 1px, transparent 1.5px),
+    radial-gradient(circle, #ffb6ce 1px, transparent 1.5px);
+
+  background-size: 83px 91px, 127px 119px;
+  background-position: 0 0, 37px 49px;
+  opacity: 0.35;
+
+  animation: starDrift 24s linear infinite;
+}
+
+.stars::before,
+.stars::after {
+  content: "";
+  position: absolute;
+  inset: -20%;
+  pointer-events: none;
+  background-repeat: repeat;
+}
+
+.stars::before {
+  background-image:
+    radial-gradient(circle, #fff8e8 1px, transparent 2px),
+    radial-gradient(circle, #ffb6ce 1.5px, transparent 2.5px);
+
+  background-size: 113px 137px, 173px 151px;
+  background-position: 12px 25px, 80px 40px;
+  opacity: 0.6;
+
+  animation: starTwinkle 4s ease-in-out infinite alternate;
+}
+
+.stars::after {
+  background-image:
+    radial-gradient(circle, #ffffff 1.5px, transparent 2.5px);
+
+  background-size: 197px 181px;
+  background-position: 45px 70px;
+  opacity: 0.4;
+
+  animation: starDrift 38s linear infinite reverse;
+}
+
+@keyframes starDrift {
+  from {
+    background-position: 0 0, 37px 49px;
+  }
+
+  to {
+    background-position: 0 180px, 37px -130px;
+  }
+}
+
+@keyframes starTwinkle {
+  from {
+    opacity: 0.2;
+    transform: scale(0.98);
+  }
+
+  to {
+    opacity: 0.8;
+    transform: scale(1.02);
+  }
+}
+
+
+/* =========================================
+   3. PAGE LAYOUT
+========================================= */
+
+.experience {
+  position: relative;
+  z-index: 1;
+
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  display: grid;
+  place-items: center;
+
+  padding: 35px 20px 100px;
+}
+
+.screen {
+  width: 100%;
+  max-width: 560px;
+  text-align: center;
+
+  animation: screenAppear 0.8s ease both;
+}
+
+.hidden {
+  display: none !important;
+}
+
+@keyframes screenAppear {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================
+   4. HEADINGS AND TEXT
+========================================= */
+
+.eyebrow {
+  color: var(--pink);
+  font-family: Arial, sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  line-height: 1.8;
+  margin-bottom: 26px;
+}
+
+h1,
+h2 {
+  font-weight: normal;
+  line-height: 1.2;
+}
+
+h1 {
+  font-size: clamp(3rem, 12vw, 5rem);
+  margin-bottom: 20px;
+}
+
+h2 {
+  font-size: clamp(2rem, 8vw, 3rem);
+  margin-bottom: 22px;
+}
+
+.subtitle,
+.letter-text,
+.final-message {
+  color: var(--muted);
+  font-size: 1.08rem;
+  line-height: 1.9;
+  max-width: 420px;
+  margin: 0 auto 28px;
+  white-space: pre-line;
+}
+
+.hint,
+.signature {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 25px;
+  line-height: 1.7;
+}
+
+
+/* =========================================
+   5. GLOWING HEARTS
+========================================= */
+
+.main-heart,
+.final-heart {
+  color: var(--rose);
+  font-size: 5.5rem;
+  line-height: 1.5;
+
+  text-shadow:
+    0 0 12px #ff759e88,
+    0 0 30px #ff759e55;
+
+  animation: heartbeat 2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.12);
+  }
+}
+
+
+/* =========================================
+   6. BUTTONS
+========================================= */
+
+button {
+  border: 1px solid #ffb6ce88;
+  border-radius: 999px;
+
+  padding: 15px 23px;
+  margin: 8px 4px;
+
+  background: linear-gradient(
+    120deg,
+    #ffb6ce,
+    #f18bad
+  );
+
+  color: #351126;
+  font-size: 0.95rem;
+  font-family: Arial, sans-serif;
+
+  cursor: pointer;
+
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease;
+
+  -webkit-tap-highlight-color: transparent;
+}
+
+button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px #ff759e40;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+button:focus-visible {
+  outline: 2px solid white;
+  outline-offset: 4px;
+}
+
+.secondary {
+  background: transparent;
+  color: var(--cream);
+}
+
+
+/* =========================================
+   7. ANIMATED LOVE LETTER ENVELOPE
+========================================= */
+
+.envelope-stage {
+  width: 100%;
+
+  display: grid;
+  place-items: center;
+
+  padding: 22px 0 12px;
+  perspective: 900px;
+}
+
+.envelope-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+
+  background: transparent;
+  border: 0;
+  border-radius: 16px;
+
+  padding: 12px;
+  margin: 0;
+
+  box-shadow: none;
+  color: var(--cream);
+  cursor: pointer;
+}
+
+.envelope-button:hover {
+  transform: translateY(-3px);
+  box-shadow: none;
+}
+
+.envelope-button:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 5px;
+}
+
+.envelope-visual {
+  position: relative;
+  display: block;
+
+  width: min(270px, 70vw);
+  height: 180px;
+
+  filter: drop-shadow(0 16px 22px #00000045);
+
+  animation: envelopeFloat 3s ease-in-out infinite;
+}
+
+/* Back of envelope */
+
+.envelope-back {
+  position: absolute;
+  inset: 28px 0 0;
+  z-index: 1;
+
+  background: linear-gradient(
+    145deg,
+    #fbe4d5,
+    #dba9a9
+  );
+
+  border-radius: 7px;
+}
+
+/* Letter inside the envelope */
+
+.envelope-paper {
+  position: absolute;
+  z-index: 2;
+
+  left: 8%;
+  bottom: 12px;
+
+  width: 84%;
+  height: 125px;
+
+  border-radius: 5px 5px 3px 3px;
+
+  background: linear-gradient(
+    135deg,
+    #fffaf0,
+    #f7e8d8
+  );
+
+  box-shadow: 0 2px 8px #5b243533;
+
+  transform: translateY(0);
+
+  transition:
+    transform 1s cubic-bezier(.2, .75, .25, 1),
+    opacity 0.5s ease;
+}
+
+.envelope-paper::before {
+  content: "♥";
+
+  position: absolute;
+  top: 20px;
+  left: 0;
+  right: 0;
+
+  text-align: center;
+  font-size: 28px;
+  color: #d9829c;
+  opacity: 0.75;
+}
+
+/* Front folds */
+
+.envelope-front {
+  position: absolute;
+  inset: 28px 0 0;
+  z-index: 3;
+
+  border-radius: 0 0 7px 7px;
+
+  background: linear-gradient(
+    145deg,
+    #f2d0bf,
+    #e7b5b5
+  );
+
+  clip-path: polygon(
+    0 0,
+    50% 58%,
+    100% 0,
+    100% 100%,
+    0 100%
+  );
+}
+
+/* Top flap */
+
+.envelope-flap {
+  position: absolute;
+  top: 28px;
+  left: 0;
+
+  width: 100%;
+  height: 92px;
+
+  z-index: 4;
+
+  background: linear-gradient(
+    145deg,
+    #ffeadc,
+    #e8b9b8
+  );
+
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    50% 100%
+  );
+
+  transform-origin: top center;
+  transform: rotateX(0deg);
+  backface-visibility: hidden;
+
+  transition:
+    transform 0.8s ease,
+    z-index 0s 0.4s;
+}
+
+/* Heart seal */
+
+.envelope-seal {
+  position: absolute;
+  z-index: 5;
+
+  left: 50%;
+  top: 70px;
+
+  width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  transform: translateX(-50%);
+
+  border-radius: 50%;
+
+  color: #fff0e7;
+
+  background: radial-gradient(
+    circle at 30% 25%,
+    #ffabc4,
+    #b94b70
+  );
+
+  box-shadow: 0 3px 12px #74244255;
+
+  transition:
+    opacity 0.3s ease,
+    transform 0.4s ease;
+}
+
+.envelope-instruction {
+  color: var(--pink);
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+
+  animation: instructionGlow 2s ease-in-out infinite alternate;
+}
+
+/* Envelope opening animation */
+
+.envelope-button.open {
+  pointer-events: none;
+}
+
+.envelope-button.open .envelope-visual {
+  animation: none;
+}
+
+.envelope-button.open .envelope-flap {
+  transform: rotateX(180deg);
+  z-index: 1;
+}
+
+.envelope-button.open .envelope-paper {
+  transform: translateY(-82px);
+  transition-delay: 0.35s;
+}
+
+.envelope-button.open .envelope-seal {
+  opacity: 0;
+  transform: translateX(-50%) scale(0.3);
+}
+
+.envelope-button.open .envelope-instruction {
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.envelope-content-opening {
+  animation: letterContentAppear 0.9s ease both;
+}
+
+@keyframes envelopeFloat {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-7px) rotate(-1deg);
+  }
+}
+
+@keyframes instructionGlow {
+  from {
+    opacity: 0.65;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes letterContentAppear {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+/* =========================================
+   8. MESSAGE CARD
+========================================= */
+
+.message-card {
+  position: relative;
+
+  padding: 32px 22px;
+  margin: 28px 0;
+
+  border: 1px solid #ffb6ce44;
+  border-radius: 22px;
+
+  background: #ffffff08;
+
+  box-shadow: 0 0 50px #ff759e0c;
+
+  backdrop-filter: blur(8px);
+}
+
+.message-card p {
+  font-size: 1.3rem;
+  line-height: 1.8;
+  color: var(--cream);
+}
+
+.sparkle {
+  display: inline-block;
+  color: var(--pink);
+  margin: 12px;
+}
+
+
+/* =========================================
+   9. FLOATING HEART PARTICLES
+========================================= */
+
+.heart-particle {
+  position: fixed;
+  z-index: 5;
+
+  pointer-events: none;
+  user-select: none;
+
+  color: var(--pink);
+
+  text-shadow:
+    0 0 8px #ff759e,
+    0 0 20px #ff759e88;
+
+  will-change: transform, opacity;
+
+  animation:
+    floatUp var(--duration, 2.8s)
+    ease-out forwards;
+}
+
+@keyframes floatUp {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate3d(0, 20px, 0)
+      scale(0.5)
+      rotate(0deg);
+  }
+
+  15% {
+    opacity: 1;
+  }
+
+  55% {
+    opacity: 0.9;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate3d(
+        var(--drift, 20px),
+        -65vh,
+        0
+      )
+      scale(1.4)
+      rotate(var(--rotation, 25deg));
+  }
+}
+
+
+/* =========================================
+   10. TAP SPARKLES
+========================================= */
+
+.sparkle-particle {
+  position: fixed;
+  z-index: 6;
+
+  pointer-events: none;
+  user-select: none;
+
+  color: #fff0c9;
+  text-shadow: 0 0 12px #ffb6ce;
+
+  font-size: var(--size, 18px);
+
+  will-change: transform, opacity;
+
+  animation: sparkleBurst 850ms ease-out forwards;
+}
+
+@keyframes sparkleBurst {
+  0% {
+    opacity: 0;
+
+    transform:
+      translate(-50%, -50%)
+      scale(0.2)
+      rotate(0deg);
+  }
+
+  25% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+
+    transform:
+      translate(
+        calc(-50% + var(--move-x)),
+        calc(-50% + var(--move-y))
+      )
+      scale(1.5)
+      rotate(100deg);
+  }
+}
+
+
+/* =========================================
+   11. MUSIC BUTTON
+========================================= */
+
+.music-control {
+  position: fixed;
+  z-index: 10;
+
+  bottom: 16px;
+  right: 14px;
+}
+
+.music-button {
+  padding: 11px 15px;
+  font-size: 0.8rem;
+
+  background: #ffffff12;
+  border-color: #ffb6ce55;
+
+  color: var(--cream);
+}
+
+
+/* =========================================
+   12. MOBILE RESPONSIVENESS
+========================================= */
+
+@media (max-width: 400px) {
+  .experience {
+    padding-inline: 16px;
+  }
+
+  .eyebrow {
+    letter-spacing: 0.16em;
+  }
+
+  button {
+    max-width: 100%;
+  }
+
+  .envelope-visual {
+    height: 160px;
+  }
+}
+
+
+/* =========================================
+   13. ACCESSIBILITY
+========================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+
+  .envelope-flap,
+  .envelope-paper,
+  .envelope-seal {
+    transition-duration: 0.01ms;
+  }
+}
