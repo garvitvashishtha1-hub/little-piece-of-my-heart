@@ -12,7 +12,7 @@
   <script src="script.js" defer></script>
 </head>
 
-<body>
+<body> 
   <!-- Animated background -->
   <div class="stars" aria-hidden="true"></div>
 
@@ -107,13 +107,73 @@
         Another reminder ♥
       </button>
 
-      <button type="button" id="finalButton" class="secondary">
-        One last thing...
+      <button type="button" id="moodButton" class="secondary">
+        A note for right now ♡
+      </button>
+
+      <button type="button" id="timelineButton" class="secondary">
+        Our little timeline →
       </button>
     </section>
 
 
-    <!-- SCREEN 4: FINAL SURPRISE -->
+    <!-- SCREEN 4: A NOTE FOR RIGHT NOW -->
+    <section class="screen hidden" id="mood" aria-labelledby="moodHeading">
+      <p class="eyebrow">A LITTLE NOTE, JUST FOR YOU</p>
+
+      <h2 id="moodHeading">What do you need right now?</h2>
+
+      <p class="mood-intro">Choose one and I'll send you a little note, one letter at a time. ♡</p>
+
+      <div class="mood-choices" role="group" aria-label="Choose a mood">
+        <button type="button" class="mood-choice" data-mood="smile" aria-pressed="false">Need a Smile</button>
+        <button type="button" class="mood-choice" data-mood="miss" aria-pressed="false">Miss You</button>
+      </div>
+
+      <article class="mood-letter hidden" id="moodLetter" aria-label="Your personal note">
+        <span class="mood-letter-heart" aria-hidden="true">♥</span>
+        <p class="mood-message" id="moodMessage" aria-live="off"></p>
+        <p class="visually-hidden" id="moodStatus" role="status" aria-live="polite"></p>
+        <button type="button" id="skipTypingButton" class="secondary hidden">Show the rest ♥</button>
+      </article>
+
+      <div class="mood-footer">
+        <button type="button" id="moodBackButton" class="secondary">Back to reminders</button>
+        <button type="button" id="moodTimelineButton" class="secondary">Our little timeline →</button>
+      </div>
+    </section>
+
+
+    <!-- SCREEN 5: OUR LITTLE TIMELINE -->
+    <section class="screen hidden" id="timeline" aria-labelledby="timelineHeading">
+      <p class="eyebrow">THREE LITTLE MOMENTS, ONE BIG STORY</p>
+
+      <h2 id="timelineHeading">Our little timeline</h2>
+
+      <p class="timeline-intro">Tap a heart to open a memory ♡</p>
+
+      <ol class="timeline-list" id="timelineList" aria-label="Relationship milestones"></ol>
+
+      <article class="timeline-memory" id="timelineMemory" aria-live="polite" aria-atomic="true">
+        <p class="memory-count" id="memoryCount"></p>
+        <p class="memory-date" id="memoryDate"></p>
+        <h3 id="memoryTitle"></h3>
+        <p class="memory-note" id="memoryNote"></p>
+      </article>
+
+      <div class="timeline-navigation" aria-label="Browse timeline memories">
+        <button type="button" id="previousMemoryButton" class="secondary">← Previous</button>
+        <button type="button" id="nextMemoryButton">Next memory →</button>
+      </div>
+
+      <div class="timeline-footer">
+        <button type="button" id="backToReasonsButton" class="secondary">Back to reminders</button>
+        <button type="button" id="finalButton" class="secondary">One last thing... →</button>
+      </div>
+    </section>
+
+
+    <!-- SCREEN 6: FINAL SURPRISE -->
     <section class="screen hidden" id="final">
       <div class="final-heart" aria-hidden="true">♥</div>
 
@@ -135,7 +195,7 @@
   </main>
 
 
-  <!-- Optional background music -->
+  <!-- Tap the music button to play or pause the included song. -->
   <div class="music-control">
     <button
       type="button"
@@ -147,8 +207,12 @@
     </button>
   </div>
 
-  <!-- Add your own audio file later if you want music -->
-  <audio id="backgroundMusic" loop preload="none"></audio>
+  <audio
+    id="backgroundMusic"
+    src="Bairan – Animated Love Story ｜ Banjaare (Official Video).mp3"
+    loop
+    preload="none"
+  ></audio>
 
 </body>
 </html>

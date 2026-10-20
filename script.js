@@ -24,6 +24,37 @@ const messages = [
 ];
 
 
+const relationshipMoments = [
+  {
+    date: "29 September",
+    title: "The day we first met",
+    note: "The first time we ever met."
+  },
+  {
+    date: "8 October 2026",
+    title: "The day we became us",
+    note: "Our relationship started. It was the best day for me, obviously. ♥"
+  },
+  {
+    date: "16 October",
+    title: "Our first hand hold",
+    note: "The first time you held my hand. ♥"
+  }
+];
+
+
+const moodMessages = {
+  smile: {
+    label: "Need a Smile",
+    text: `Ye to apne click bhi kyu kiya, mtlb mere hote hue bhi ako smile ke zarurat pad gyi aurrr agar isper click kiya bhi h to iska ek simple sa matlab h ke mujhse baat kr lo call per fir dekho kaise mei ek smile lata hu apake face per aur chaloo ab aise sad sad nhi rehete aap hamesha smile krte rha kro bht zyda aache lagte hoo sacchi me aur abhi to mere pass nhi hoo jab mere pass aa jaoge tab to sad hone he nhi dunga apkoo ye vachan h mera kyuki meri madam jii ko to mei sad dekh he nhi sakta chalo ab happy ho jao because I LOVE YOU my KUCHU-PUCHU :)`
+  },
+  miss: {
+    label: "Miss You",
+    text: `Ab itna aacha ladka mila h to yaad to ayegi he naaa to abb mil to sakte nhi h to fir ek kaam kro maine jo apko videos bheje h na aur jo mere photo apke pass h unhe dekh loo, mujhe pta h ke vo dekhne se aur zyda yaad ayegi but something is always better then nothing isliye aur agr bht zyda yaad aaye to bol diya kro ek video bhej apani ya fir voice note kyuki apko khush rakhne ke liye to mei kuch bhi krne ko taiiyar huuu my babyyyy`
+  }
+};
+
+
 const myFinalMessage = `You can take this a one of my way to express my love to you , mujhe pta he ke kabhi-kabhi mei vo nhi krta jo mujhe krna chaiye, jaise apse aache se baat, but uska ye matlab nhi hai ke I don't love you, vo to bs ye aadat se pad gyi h but don't worry ise to theek kr lunga mei.
 
 Thank you for being you.
@@ -48,6 +79,25 @@ const letterText = document.querySelector("#letterText");
 const reasonsButton = document.querySelector("#reasonsButton");
 const reasonText = document.querySelector("#reasonText");
 const nextReasonButton = document.querySelector("#nextReasonButton");
+const moodButton = document.querySelector("#moodButton");
+const moodChoiceButtons = document.querySelectorAll(".mood-choice");
+const moodLetter = document.querySelector("#moodLetter");
+const moodMessageElement = document.querySelector("#moodMessage");
+const moodStatus = document.querySelector("#moodStatus");
+const skipTypingButton = document.querySelector("#skipTypingButton");
+const moodBackButton = document.querySelector("#moodBackButton");
+const moodTimelineButton = document.querySelector("#moodTimelineButton");
+const timelineButton = document.querySelector("#timelineButton");
+
+const timelineList = document.querySelector("#timelineList");
+const timelineMemory = document.querySelector("#timelineMemory");
+const memoryCount = document.querySelector("#memoryCount");
+const memoryDate = document.querySelector("#memoryDate");
+const memoryTitle = document.querySelector("#memoryTitle");
+const memoryNote = document.querySelector("#memoryNote");
+const previousMemoryButton = document.querySelector("#previousMemoryButton");
+const nextMemoryButton = document.querySelector("#nextMemoryButton");
+const backToReasonsButton = document.querySelector("#backToReasonsButton");
 const finalButton = document.querySelector("#finalButton");
 
 const finalMessage = document.querySelector("#finalMessage");
@@ -62,6 +112,9 @@ const musicButton = document.querySelector("#musicButton");
 ========================================= */
 
 let messageIndex = 0;
+let timelineIndex = 0;
+let activeMoodMessage = "";
+let isMoodTyping = false;
 let musicOn = false;
 let typingTimer = null;
 
@@ -86,7 +139,7 @@ function showScreen(id) {
    5. TYPING ANIMATION
 ========================================= */
 
-function typeText(element, text, speed = 28) {
+function typeText(element, text, speed = 28, onComplete = null) {
   // Stop any previous typing animation.
   if (typingTimer !== null) {
     clearInterval(typingTimer);
@@ -104,13 +157,153 @@ function typeText(element, text, speed = 28) {
     if (index >= text.length) {
       clearInterval(typingTimer);
       typingTimer = null;
+      onComplete?.();
     }
   }, speed);
 }
 
 
 /* =========================================
-   6. FLOATING HEARTS
+   6. CLICKABLE RELATIONSHIP TIMELINE
+========================================= */
+
+function initializeTimeline() {
+  relationshipMoments.forEach((moment, index) => {
+    const item = document.createElement("li");
+    item.className = "timeline-item";
+
+    const stop = document.createElement("button");
+    stop.type = "button";
+    stop.className = "timeline-stop";
+    stop.setAttribute("aria-pressed", "false");
+    stop.setAttribute(
+      "aria-label",
+      `Show memory ${index + 1}: ${moment.title}, ${moment.date}`
+    );
+
+    const heart = document.createElement("span");
+    heart.className = "timeline-heart";
+    heart.setAttribute("aria-hidden", "true");
+    heart.textContent = "♥";
+
+    const copy = document.createElement("span");
+    copy.className = "timeline-stop-copy";
+
+    const date = document.createElement("span");
+    date.className = "timeline-stop-date";
+    date.textContent = moment.date;
+
+    const title = document.createElement("span");
+    title.className = "timeline-stop-title";
+    title.textContent = moment.title;
+
+    copy.append(date, title);
+    stop.append(heart, copy);
+    stop.addEventListener("click", () => showTimelineMemory(index));
+    item.append(stop);
+    timelineList.append(item);
+  });
+
+  showTimelineMemory(0, false);
+}
+
+
+function showTimelineMemory(index, celebrate = true) {
+  if (index < 0 || index >= relationshipMoments.length) {
+    return;
+  }
+
+  timelineIndex = index;
+  const moment = relationshipMoments[index];
+
+  memoryCount.textContent =
+    `MEMORY ${String(index + 1).padStart(2, "0")} OF ${String(relationshipMoments.length).padStart(2, "0")}`;
+  memoryDate.textContent = moment.date;
+  memoryTitle.textContent = moment.title;
+  memoryNote.textContent = moment.note;
+
+  timelineList.querySelectorAll(".timeline-stop").forEach((stop, stopIndex) => {
+    stop.setAttribute("aria-pressed", String(stopIndex === index));
+  });
+
+  previousMemoryButton.disabled = index === 0;
+  nextMemoryButton.disabled = index === relationshipMoments.length - 1;
+
+  timelineMemory.classList.remove("memory-animate");
+  void timelineMemory.offsetWidth;
+  timelineMemory.classList.add("memory-animate");
+
+  if (celebrate) {
+    const selectedStop = timelineList.children[index].querySelector(".timeline-stop");
+    const bounds = selectedStop.getBoundingClientRect();
+    createHearts(5, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
+  }
+}
+
+
+function showMoodMessage(moodKey) {
+  const selectedMood = moodMessages[moodKey];
+
+  if (!selectedMood) {
+    return;
+  }
+
+  activeMoodMessage = selectedMood.text;
+  moodChoiceButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.mood === moodKey));
+  });
+
+  moodLetter.classList.remove("hidden", "reveal");
+  void moodLetter.offsetWidth;
+  moodLetter.classList.add("reveal");
+
+  moodMessageElement.textContent = "";
+  moodStatus.textContent = `Your ${selectedMood.label} note is typing.`;
+  skipTypingButton.classList.remove("hidden");
+  isMoodTyping = true;
+
+  typeText(moodMessageElement, selectedMood.text, 28, () => {
+    isMoodTyping = false;
+    skipTypingButton.classList.add("hidden");
+    moodStatus.textContent = `Your ${selectedMood.label} note is ready.`;
+  });
+
+  createHearts(6);
+}
+
+
+function finishMoodTyping() {
+  if (!isMoodTyping) {
+    return;
+  }
+
+  if (typingTimer !== null) {
+    clearInterval(typingTimer);
+    typingTimer = null;
+  }
+
+  moodMessageElement.textContent = activeMoodMessage;
+  isMoodTyping = false;
+  skipTypingButton.classList.add("hidden");
+  moodStatus.textContent = "Your note is ready.";
+}
+
+
+function resetMoodScreen() {
+  finishMoodTyping();
+  activeMoodMessage = "";
+  moodChoiceButtons.forEach(button => {
+    button.setAttribute("aria-pressed", "false");
+  });
+  moodLetter.classList.add("hidden");
+  moodLetter.classList.remove("reveal");
+  moodMessageElement.textContent = "";
+  moodStatus.textContent = "";
+}
+
+
+/* =========================================
+   7. FLOATING HEARTS
 ========================================= */
 
 function createHearts(amount = 10, originX = null, originY = null) {
@@ -203,6 +396,9 @@ function createSparkles(x, y) {
 }
 
 
+initializeTimeline();
+
+
 /* =========================================
    8. FIRST SCREEN: BEGIN THE EXPERIENCE
 ========================================= */
@@ -280,7 +476,58 @@ nextReasonButton.addEventListener("click", () => {
 
 
 /* =========================================
-   12. REVEAL THE FINAL MESSAGE
+   12. SHOW A NOTE FOR THE SELECTED MOOD
+========================================= */
+
+moodButton.addEventListener("click", () => {
+  resetMoodScreen();
+  showScreen("mood");
+  createHearts(8);
+});
+
+moodChoiceButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    showMoodMessage(button.dataset.mood);
+  });
+});
+
+skipTypingButton.addEventListener("click", finishMoodTyping);
+
+moodBackButton.addEventListener("click", () => {
+  finishMoodTyping();
+  showScreen("reasons");
+});
+
+
+/* =========================================
+   13. BROWSE THE RELATIONSHIP TIMELINE
+========================================= */
+
+function openTimeline() {
+  finishMoodTyping();
+  showScreen("timeline");
+  showTimelineMemory(0, false);
+  createHearts(8);
+}
+
+timelineButton.addEventListener("click", openTimeline);
+moodTimelineButton.addEventListener("click", openTimeline);
+
+previousMemoryButton.addEventListener("click", () => {
+  showTimelineMemory(timelineIndex - 1);
+});
+
+nextMemoryButton.addEventListener("click", () => {
+  showTimelineMemory(timelineIndex + 1);
+});
+
+backToReasonsButton.addEventListener("click", () => {
+  showScreen("reasons");
+});
+
+
+/* =========================================
+   14. REVEAL THE FINAL MESSAGE
 ========================================= */
 
 finalButton.addEventListener("click", () => {
@@ -293,7 +540,7 @@ finalButton.addEventListener("click", () => {
 
 
 /* =========================================
-   13. REPLAY THE WHOLE EXPERIENCE
+   15. REPLAY THE WHOLE EXPERIENCE
 ========================================= */
 
 replayButton.addEventListener("click", () => {
@@ -326,6 +573,8 @@ replayButton.addEventListener("click", () => {
   reasonText.textContent = "Tap the button, sweetheart.";
 
   messageIndex = 0;
+  resetMoodScreen();
+  showTimelineMemory(0, false);
 
   showScreen("welcome");
 
@@ -334,7 +583,7 @@ replayButton.addEventListener("click", () => {
 
 
 /* =========================================
-   14. OPTIONAL BACKGROUND MUSIC
+   16. OPTIONAL BACKGROUND MUSIC
 ========================================= */
 
 musicButton.addEventListener("click", async () => {
@@ -363,7 +612,7 @@ musicButton.addEventListener("click", async () => {
 
 
 /* =========================================
-   15. BACKGROUND TAP SPARKLES
+   17. BACKGROUND TAP SPARKLES
 ========================================= */
 
 document.addEventListener("pointerdown", event => {
