@@ -839,6 +839,49 @@ button:focus-visible {
   white-space: pre-line;
 }
 
+.mischief-panel {
+  margin: 18px auto 4px;
+  padding-top: 4px;
+}
+
+.mischief-prompt,
+.mischief-response,
+.mischief-footnote {
+  color: var(--muted);
+  font-size: 0.98rem;
+  line-height: 1.75;
+}
+
+.mischief-footnote {
+  margin: 8px 0 0;
+  font-size: 0.82rem;
+}
+
+.mischief-choices {
+  display: grid;
+  gap: 8px;
+  margin: 18px auto 12px;
+}
+
+.mischief-choices button {
+  width: 100%;
+  max-width: 460px;
+  margin: 0 auto;
+  border-radius: 18px;
+  line-height: 1.5;
+  white-space: normal;
+}
+
+.mischief-choices button[aria-pressed="true"] {
+  border-color: #ffb6ce;
+  background: #ffb6ce22;
+  color: var(--cream);
+}
+
+.mischief-response {
+  margin: 12px 0 0;
+}
+
 .timeline-navigation,
 .timeline-footer {
   display: flex;

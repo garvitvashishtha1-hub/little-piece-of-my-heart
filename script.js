@@ -39,8 +39,20 @@ const relationshipMoments = [
     date: "16 October",
     title: "Our first hand hold",
     note: "The first time you held my hand. ♥"
+  },
+  {
+    date: "Coming soon",
+    title: "A little mischief",
+    note: "A little mischief is coming at the freshers’ party… keep an eye out 😉✨",
+    hasMischiefChoices: true
   }
 ];
+
+const mischiefResponses = {
+  surprise: "Okay—I’ll keep the details secret and check with you at the party. 💗",
+  hint: "It’s something sweet and romantic, just for us… ✨",
+  skip: "Of course. No surprise—just enjoy the party. 🌷"
+};
 
 
 const moodMessages = {
@@ -95,6 +107,9 @@ const memoryCount = document.querySelector("#memoryCount");
 const memoryDate = document.querySelector("#memoryDate");
 const memoryTitle = document.querySelector("#memoryTitle");
 const memoryNote = document.querySelector("#memoryNote");
+const mischiefPanel = document.querySelector("#mischiefPanel");
+const mischiefChoiceButtons = document.querySelectorAll("[data-mischief-choice]");
+const mischiefResponse = document.querySelector("#mischiefResponse");
 const previousMemoryButton = document.querySelector("#previousMemoryButton");
 const nextMemoryButton = document.querySelector("#nextMemoryButton");
 const backToReasonsButton = document.querySelector("#backToReasonsButton");
@@ -117,6 +132,7 @@ let activeMoodMessage = "";
 let isMoodTyping = false;
 let musicOn = false;
 let typingTimer = null;
+let selectedMischiefChoice = "";
 
 
 /* =========================================
@@ -221,6 +237,8 @@ function showTimelineMemory(index, celebrate = true) {
   memoryDate.textContent = moment.date;
   memoryTitle.textContent = moment.title;
   memoryNote.textContent = moment.note;
+  mischiefPanel.classList.toggle("hidden", !moment.hasMischiefChoices);
+  updateMischiefChoiceView();
 
   timelineList.querySelectorAll(".timeline-stop").forEach((stop, stopIndex) => {
     stop.setAttribute("aria-pressed", String(stopIndex === index));
@@ -238,6 +256,20 @@ function showTimelineMemory(index, celebrate = true) {
     const bounds = selectedStop.getBoundingClientRect();
     createHearts(5, bounds.left + bounds.width / 2, bounds.top + bounds.height / 2);
   }
+}
+
+
+function updateMischiefChoiceView() {
+  mischiefChoiceButtons.forEach(button => {
+    button.setAttribute(
+      "aria-pressed",
+      String(button.dataset.mischiefChoice === selectedMischiefChoice)
+    );
+  });
+
+  const response = mischiefResponses[selectedMischiefChoice] || "";
+  mischiefResponse.textContent = response;
+  mischiefResponse.classList.toggle("hidden", !response);
 }
 
 
@@ -519,6 +551,13 @@ previousMemoryButton.addEventListener("click", () => {
 
 nextMemoryButton.addEventListener("click", () => {
   showTimelineMemory(timelineIndex + 1);
+});
+
+mischiefChoiceButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    selectedMischiefChoice = button.dataset.mischiefChoice;
+    updateMischiefChoiceView();
+  });
 });
 
 backToReasonsButton.addEventListener("click", () => {

@@ -146,7 +146,7 @@
 
     <!-- SCREEN 5: OUR LITTLE TIMELINE -->
     <section class="screen hidden" id="timeline" aria-labelledby="timelineHeading">
-      <p class="eyebrow">THREE LITTLE MOMENTS, ONE BIG STORY</p>
+      <p class="eyebrow">FOUR LITTLE MOMENTS, ONE BIG STORY</p>
 
       <h2 id="timelineHeading">Our little timeline</h2>
 
@@ -159,6 +159,26 @@
         <p class="memory-date" id="memoryDate"></p>
         <h3 id="memoryTitle"></h3>
         <p class="memory-note" id="memoryNote"></p>
+        <div class="mischief-panel hidden" id="mischiefPanel">
+          <p class="mischief-prompt">
+            I have a sweet, slightly bold surprise planned for the freshers’ party. I hope it makes you smile, but only if you’re comfortable. You can keep it a surprise, ask for a hint, or skip it—and you can change your mind anytime.
+          </p>
+
+          <div class="mischief-choices" role="group" aria-label="Choose how you feel about the surprise">
+            <button type="button" class="secondary" data-mischief-choice="surprise" aria-pressed="false">
+              Keep it a surprise—check with me first 😉
+            </button>
+            <button type="button" class="secondary" data-mischief-choice="hint" aria-pressed="false">
+              Give me a hint 👀
+            </button>
+            <button type="button" class="secondary" data-mischief-choice="skip" aria-pressed="false">
+              Skip it, please 🌷
+            </button>
+          </div>
+
+          <p class="mischief-footnote">Your choices only show here, so I’ll still check in with you at the party. ♡</p>
+          <p class="mischief-response hidden" id="mischiefResponse" role="status" aria-live="polite"></p>
+        </div>
       </article>
 
       <div class="timeline-navigation" aria-label="Browse timeline memories">
