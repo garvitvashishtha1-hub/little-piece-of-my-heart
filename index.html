@@ -160,24 +160,53 @@
         <h3 id="memoryTitle"></h3>
         <p class="memory-note" id="memoryNote"></p>
         <div class="mischief-panel hidden" id="mischiefPanel">
-          <p class="mischief-prompt">
-            I have a sweet, slightly bold surprise planned for the freshers’ party. I hope it makes you smile, but only if you’re comfortable. You can keep it a surprise, ask for a hint, or skip it—and you can change your mind anytime.
+          <p class="mischief-intro">
+            I’m a little shy to ask out loud, so I made you a tiny puzzle. Solving it only reveals what I had in mind—you can skip it, and you can say yes, no, or “I’m not sure.”
           </p>
 
-          <div class="mischief-choices" role="group" aria-label="Choose how you feel about the surprise">
-            <button type="button" class="secondary" data-mischief-choice="surprise" aria-pressed="false">
-              Keep it a surprise—check with me first 😉
-            </button>
-            <button type="button" class="secondary" data-mischief-choice="hint" aria-pressed="false">
-              Give me a hint 👀
-            </button>
-            <button type="button" class="secondary" data-mischief-choice="skip" aria-pressed="false">
-              Skip it, please 🌷
+          <div class="mischief-quiz" id="mischiefQuiz">
+            <p class="mischief-warning">
+              One try at each question. A wrong answer locks the puzzle—but you can still see what I wanted to ask.
+            </p>
+            <p class="mischief-question-count" id="mischiefQuestionCount">Question 1 of 2</p>
+            <p class="mischief-question" id="mischiefQuestion"></p>
+            <div class="mischief-choices" id="mischiefAnswerChoices" role="group" aria-label="Puzzle answers"></div>
+            <p class="mischief-quiz-status" id="mischiefQuizStatus" role="status" aria-live="polite"></p>
+            <button type="button" class="secondary mischief-skip" id="skipMischiefPuzzleButton">
+              Skip the puzzle and show me
             </button>
           </div>
 
-          <p class="mischief-footnote">Your choices only show here, so I’ll still check in with you at the party. ♡</p>
-          <p class="mischief-response hidden" id="mischiefResponse" role="status" aria-live="polite"></p>
+          <p class="mischief-lock-notice hidden" id="mischiefLockNotice" role="status" aria-live="polite">
+            That was your one try. The puzzle is locked, but here’s what I wanted to ask.
+          </p>
+
+          <section class="mischief-reveal hidden" id="mischiefReveal" aria-labelledby="mischiefRevealHeading">
+            <h4 id="mischiefRevealHeading">Here’s what I wanted to ask</h4>
+            <p class="mischief-prompt">
+              I’m a little shy to ask, so I’m writing it here: I’d love to share a French kiss with you at the Freshers’ party, if you’d like that too. If you’re not comfortable, that’s completely okay. You don’t have to explain your answer. If you’re open to it, I’ll still check with you quietly in the moment.
+            </p>
+
+            <div class="mischief-choices" role="group" aria-label="Choose your answer">
+              <button type="button" class="secondary" data-mischief-choice="open" aria-pressed="false">
+                I’d be open to it—check with me in the moment 💗
+              </button>
+              <button type="button" class="secondary" data-mischief-choice="no" aria-pressed="false">
+                No, I’m not comfortable 🌷
+              </button>
+              <button type="button" class="secondary" data-mischief-choice="unsure" aria-pressed="false">
+                I’m not sure—let’s leave it for now 🌙
+              </button>
+            </div>
+
+            <p class="mischief-response hidden" id="mischiefResponse" role="status" aria-live="polite"></p>
+            <a class="mischief-send hidden" id="sendMischiefAnswerButton" href="#" target="_blank" rel="noopener noreferrer">
+              Send my answer privately on WhatsApp
+            </a>
+            <p class="mischief-footnote">
+              WhatsApp will open with your answer ready. It only reaches me if you press Send.
+            </p>
+          </section>
         </div>
       </article>
 

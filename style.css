@@ -844,12 +844,36 @@ button:focus-visible {
   padding-top: 4px;
 }
 
+.mischief-intro,
 .mischief-prompt,
 .mischief-response,
-.mischief-footnote {
+.mischief-footnote,
+.mischief-warning,
+.mischief-quiz-status {
   color: var(--muted);
   font-size: 0.98rem;
   line-height: 1.75;
+}
+
+.mischief-warning {
+  margin: 16px 0;
+  color: var(--pink);
+  font-size: 0.88rem;
+}
+
+.mischief-question-count {
+  margin: 14px 0 4px;
+  color: var(--pink);
+  font-size: 0.76rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.mischief-question {
+  margin: 4px 0 14px;
+  color: var(--cream);
+  font-size: 1.1rem;
+  line-height: 1.5;
 }
 
 .mischief-footnote {
@@ -870,6 +894,28 @@ button:focus-visible {
   border-radius: 18px;
   line-height: 1.5;
   white-space: normal;
+}
+
+.mischief-send {
+  display: inline-flex;
+  justify-content: center;
+  margin: 14px 4px 4px;
+  padding: 13px 20px;
+  border: 1px solid #ffb6ce88;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+.mischief-send:hover,
+.mischief-send:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 28px #ff759e40;
 }
 
 .mischief-choices button[aria-pressed="true"] {

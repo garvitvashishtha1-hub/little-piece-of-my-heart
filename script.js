@@ -48,11 +48,42 @@ const relationshipMoments = [
   }
 ];
 
+const mischiefQuestions = [
+  {
+    prompt: "What’s my date of birth?",
+    answers: [
+      { label: "2nd April", value: "april-2" },
+      { label: "2nd March", value: "march-2" },
+      { label: "12th April", value: "april-12" },
+      { label: "2nd May", value: "may-2" }
+    ],
+    correctAnswer: "april-2"
+  },
+  {
+    prompt: "Which word means a romantic touch of the lips?",
+    answers: [
+      { label: "Kiss", value: "kiss" },
+      { label: "Hug", value: "hug" },
+      { label: "Hand-hold", value: "hand-hold" }
+    ],
+    correctAnswer: "kiss"
+  }
+];
+
 const mischiefResponses = {
-  surprise: "Okay—I’ll keep the details secret and check with you at the party. 💗",
-  hint: "It’s something sweet and romantic, just for us… ✨",
-  skip: "Of course. No surprise—just enjoy the party. 🌷"
+  open: "Thank you. I’ll check with you quietly in the moment before anything happens. 💗",
+  no: "Thanks for telling me. I won’t do it, and we can leave this here. 🌷",
+  unsure: "That’s okay. I won’t assume; we can leave it there. 🌙"
 };
+
+const mischiefWhatsAppMessages = {
+  open: "I saw your Freshers’ party question. I’d be open to a French kiss, but please check with me in the moment.",
+  no: "I saw your Freshers’ party question. I’m not comfortable with a French kiss. Please don’t do it.",
+  unsure: "I saw your Freshers’ party question. I’m not sure, so let’s leave it for now."
+};
+
+const mischiefWhatsAppNumber = "919870374928";
+const mischiefRevealStorageKey = "little-piece-of-my-heart:mischief-reveal-unlocked";
 
 
 const moodMessages = {
@@ -108,8 +139,17 @@ const memoryDate = document.querySelector("#memoryDate");
 const memoryTitle = document.querySelector("#memoryTitle");
 const memoryNote = document.querySelector("#memoryNote");
 const mischiefPanel = document.querySelector("#mischiefPanel");
+const mischiefQuiz = document.querySelector("#mischiefQuiz");
+const mischiefQuestionCount = document.querySelector("#mischiefQuestionCount");
+const mischiefQuestion = document.querySelector("#mischiefQuestion");
+const mischiefAnswerChoices = document.querySelector("#mischiefAnswerChoices");
+const mischiefQuizStatus = document.querySelector("#mischiefQuizStatus");
+const skipMischiefPuzzleButton = document.querySelector("#skipMischiefPuzzleButton");
+const mischiefLockNotice = document.querySelector("#mischiefLockNotice");
+const mischiefReveal = document.querySelector("#mischiefReveal");
 const mischiefChoiceButtons = document.querySelectorAll("[data-mischief-choice]");
 const mischiefResponse = document.querySelector("#mischiefResponse");
+const sendMischiefAnswerButton = document.querySelector("#sendMischiefAnswerButton");
 const previousMemoryButton = document.querySelector("#previousMemoryButton");
 const nextMemoryButton = document.querySelector("#nextMemoryButton");
 const backToReasonsButton = document.querySelector("#backToReasonsButton");
@@ -132,7 +172,16 @@ let activeMoodMessage = "";
 let isMoodTyping = false;
 let musicOn = false;
 let typingTimer = null;
-let selectedMischiefChoice = "";
+let mischiefQuestionIndex = 0;
+let mischiefQuestionRendered = false;
+let mischiefPuzzleLocked = false;
+let mischiefRevealUnlocked = false;
+
+try {
+  mischiefRevealUnlocked = window.localStorage.getItem(mischiefRevealStorageKey) === "true";
+} catch {
+  // The puzzle still works if browser storage is unavailable.
+}
 
 
 /* =========================================
@@ -238,7 +287,13 @@ function showTimelineMemory(index, celebrate = true) {
   memoryTitle.textContent = moment.title;
   memoryNote.textContent = moment.note;
   mischiefPanel.classList.toggle("hidden", !moment.hasMischiefChoices);
-  updateMischiefChoiceView();
+  if (moment.hasMischiefChoices) {
+    if (mischiefRevealUnlocked) {
+      showMischiefReveal();
+    } else if (!mischiefQuestionRendered && !mischiefQuiz.classList.contains("hidden")) {
+      renderMischiefQuestion();
+    }
+  }
 
   timelineList.querySelectorAll(".timeline-stop").forEach((stop, stopIndex) => {
     stop.setAttribute("aria-pressed", String(stopIndex === index));
@@ -259,17 +314,75 @@ function showTimelineMemory(index, celebrate = true) {
 }
 
 
-function updateMischiefChoiceView() {
-  mischiefChoiceButtons.forEach(button => {
-    button.setAttribute(
-      "aria-pressed",
-      String(button.dataset.mischiefChoice === selectedMischiefChoice)
-    );
+function renderMischiefQuestion() {
+  const question = mischiefQuestions[mischiefQuestionIndex];
+  mischiefQuestionCount.textContent = `Question ${mischiefQuestionIndex + 1} of ${mischiefQuestions.length}`;
+  mischiefQuestion.textContent = question.prompt;
+  mischiefAnswerChoices.replaceChildren();
+
+  question.answers.forEach(answer => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "secondary";
+    button.textContent = answer.label;
+    button.addEventListener("click", () => handleMischiefAnswer(answer.value));
+    mischiefAnswerChoices.append(button);
   });
 
-  const response = mischiefResponses[selectedMischiefChoice] || "";
-  mischiefResponse.textContent = response;
-  mischiefResponse.classList.toggle("hidden", !response);
+  mischiefQuestionRendered = true;
+}
+
+
+function handleMischiefAnswer(answer) {
+  if (mischiefPuzzleLocked) {
+    return;
+  }
+
+  if (answer !== mischiefQuestions[mischiefQuestionIndex].correctAnswer) {
+    mischiefPuzzleLocked = true;
+    mischiefLockNotice.classList.remove("hidden");
+    showMischiefReveal();
+    return;
+  }
+
+  if (mischiefQuestionIndex < mischiefQuestions.length - 1) {
+    mischiefQuestionIndex++;
+    mischiefQuizStatus.textContent = "That’s right—one more question!";
+    renderMischiefQuestion();
+    return;
+  }
+
+  mischiefPuzzleLocked = true;
+  showMischiefReveal();
+}
+
+
+function showMischiefReveal() {
+  mischiefPuzzleLocked = true;
+  mischiefRevealUnlocked = true;
+  try {
+    window.localStorage.setItem(mischiefRevealStorageKey, "true");
+  } catch {
+    // The reveal remains available for this visit if browser storage is unavailable.
+  }
+
+  mischiefQuiz.classList.add("hidden");
+  mischiefReveal.classList.remove("hidden");
+}
+
+
+function updateMischiefChoiceView(choice) {
+  mischiefChoiceButtons.forEach(button => {
+    button.setAttribute("aria-pressed", String(button.dataset.mischiefChoice === choice));
+  });
+
+  mischiefResponse.textContent = mischiefResponses[choice];
+  mischiefResponse.classList.remove("hidden");
+
+  const message = mischiefWhatsAppMessages[choice];
+  sendMischiefAnswerButton.href =
+    `https://wa.me/${mischiefWhatsAppNumber}?text=${encodeURIComponent(message)}`;
+  sendMischiefAnswerButton.classList.remove("hidden");
 }
 
 
@@ -553,10 +666,11 @@ nextMemoryButton.addEventListener("click", () => {
   showTimelineMemory(timelineIndex + 1);
 });
 
+skipMischiefPuzzleButton.addEventListener("click", showMischiefReveal);
+
 mischiefChoiceButtons.forEach(button => {
   button.addEventListener("click", () => {
-    selectedMischiefChoice = button.dataset.mischiefChoice;
-    updateMischiefChoiceView();
+    updateMischiefChoiceView(button.dataset.mischiefChoice);
   });
 });
 
